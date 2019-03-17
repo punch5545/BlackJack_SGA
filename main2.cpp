@@ -20,14 +20,15 @@ void MoveCursor(short x, short y, const char* str);
 int battle(Obj player, Obj mob, int mobCount);
 
 Obj player = {
-(char*)"¢¾", 3, 3, 50, 10, 10, 10 };
+(char*)"â™¥", 3, 3, 50, 10, 10, 10 };
 
 Obj mob[3] = {
-	{(char*)"¡ß", 9, 5, 50, rand()%10+1, rand()%30+1, rand()%10+1 },
-	{(char*)"¡ß", 10, 3, 30, rand()%10+1, rand()%20+1, rand()%10+1 },
-	{(char*)"¡ß", 3, 8, 20, rand()%20+1, rand()%10+1, rand()%30+1 }
+	{(char*)"â—†", 9, 5, 50, rand()%10+1, rand()%30+1, rand()%10+1 },
+	{(char*)"â—†", 10, 3, 30, rand()%10+1, rand()%20+1, rand()%10+1 },
+	{(char*)"â—†", 3, 8, 60, rand()%30+1, rand()%10+1, rand()%30+1 }
 };
 int count;
+int php = player.hp;
 
 int main() {
 	srand(time(0));
@@ -87,22 +88,23 @@ void DrawObject(Obj obj)
 int battle(Obj player, Obj mob,int mobCount) {
 	srand(time(0));
 	int turn = 2;
-	while (mob.hp > 0 && player.hp > 0) {
+	while (mob.hp > 0 && php > 0) {
+		system("cls");
 		if (turn % 2 == 0) { // player turn
 			MoveCursor(2, 27, "Player Turn");
 			if (mob.luk >= rand() % 200 + 1) {
-				MoveCursor(2, 25, "Miss!                                                                                           ");
+				MoveCursor(2, 25, "Miss!                                                                                              ");
 			}
 			else {
-				if (player.luk >= rand() % 50 + 1) { // Ä¡¸íÅ¸, ¹æ¾î·Â ¹«½Ã
+				if (player.luk >= rand() % 50 + 1) { // ì¹˜ëª…íƒ€, ë°©ì–´ë ¥ ë¬´ì‹œ
 					mob.hp -= player.atk;
 					MoveCursor(2, 25, "");
-					printf("Ä¡¸íÅ¸! %d¸¸Å­ÀÇ ´ë¹ÌÁö¸¦ ÀÔÇû½À´Ï´Ù.   ³²Àº Ã¼·Â: %d                                                  ", player.atk, mob.hp);
+					printf("ì¹˜ëª…íƒ€! %dë§Œí¼ì˜ ëŒ€ë¯¸ì§€ë¥¼ ì…í˜”ìŠµë‹ˆë‹¤.   ë‚¨ì€ ì²´ë ¥: %d                                                  ", player.atk, mob.hp);
 				}
 				else {
-					mob.hp -= player.atk - (player.atk * mob.def / 100); // ¹æ¾î·Â% ¸¸Å­ °ø°İ ´ë¹ÌÁö °¨¼è
+					mob.hp -= player.atk - (player.atk * mob.def / 100); // ë°©ì–´ë ¥% ë§Œí¼ ê³µê²© ëŒ€ë¯¸ì§€ ê°ì‡ 
 					MoveCursor(2, 25, ""); 
-					printf("À¯È¿Å¸! %d¸¸Å­ÀÇ ´ë¹ÌÁö¸¦ ÀÔÇû½À´Ï´Ù.   ³²Àº Ã¼·Â: %d                                               ", player.atk - (player.atk * mob.def / 100), mob.hp);
+					printf("ìœ íš¨íƒ€! %dë§Œí¼ì˜ ëŒ€ë¯¸ì§€ë¥¼ ì…í˜”ìŠµë‹ˆë‹¤.   ë‚¨ì€ ì²´ë ¥: %d                                               ", player.atk - (player.atk * mob.def / 100), mob.hp);
 				}
 			}
 		}
@@ -112,20 +114,20 @@ int battle(Obj player, Obj mob,int mobCount) {
 				MoveCursor(2, 25, "Miss!                                    ");
 			}
 			else {
-				if (player.luk >= rand() % 50 + 1) { // Ä¡¸íÅ¸, ¹æ¾î·Â ¹«½Ã
-					player.hp -= mob.atk;
+				if (player.luk >= rand() % 50 + 1) { // ì¹˜ëª…íƒ€, ë°©ì–´ë ¥ ë¬´ì‹œ
+					php -= mob.atk;
 					MoveCursor(2, 25, "");
-					printf("Ä¡¸íÅ¸! %d¸¸Å­ÀÇ ´ë¹ÌÁö¸¦ ÀÔ¾ú½À´Ï´Ù.  ³²Àº Ã¼·Â: %d                                                 ", mob.atk, player.hp);
+					printf("ì¹˜ëª…íƒ€! %dë§Œí¼ì˜ ëŒ€ë¯¸ì§€ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤.  ë‚¨ì€ ì²´ë ¥: %d                                                 ", mob.atk, php);
 				}
 				else {
-					player.hp -= mob.atk - (mob.atk * player.def / 100); // ¹æ¾î·Â% ¸¸Å­ °ø°İ ´ë¹ÌÁö °¨¼è
+					php -= mob.atk - (mob.atk * player.def / 100); // ë°©ì–´ë ¥% ë§Œí¼ ê³µê²© ëŒ€ë¯¸ì§€ ê°ì‡ 
 					MoveCursor(2, 25, "");
-					printf("À¯È¿Å¸! %d¸¸Å­ÀÇ ´ë¹ÌÁö¸¦ ÀÔ¾ú½À´Ï´Ù.  ³²Àº Ã¼·Â: %d                                                 ", mob.atk - (mob.atk * player.def / 100), player.hp);
+					printf("ìœ íš¨íƒ€! %dë§Œí¼ì˜ ëŒ€ë¯¸ì§€ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤.  ë‚¨ì€ ì²´ë ¥: %d                                                 ", mob.atk - (mob.atk * player.def / 100), php);
 				}
 			}
 		}
 		MoveCursor(0, 20, "Cur HP");
-		for (int i = 0; i < player.hp; i++) {
+		for (int i = 0; i < php; i++) {
 			MoveCursor(i + 8, 20, "");
 			printf("|           ");
 		}
@@ -134,14 +136,14 @@ int battle(Obj player, Obj mob,int mobCount) {
 			MoveCursor(i + 8, 23, "");
 			printf("|           ");
 		}
-		Sleep(2000);
+		Sleep(1500);
 		turn++;
 	}
 	if (mob.hp < 1) {
 		mob.symbol = (char*)" ";
 		MoveCursor(2, 25, "Enemy Slayered!");
 	}
-	else if(player.hp <= 0) {
+	else if(php <= 0) {
 		MoveCursor(4, 2, "  ::::::::      :::     ::::    ::::  ::::::::::   ::::::::  :::     ::: :::::::::: :::::::::  ");
 		MoveCursor(4, 3, " :+:    :+:   :+: :+:   +:+:+: :+:+:+ :+:         :+:    :+: :+:     :+: :+:        :+:    :+: ");
 		MoveCursor(4, 4, " +:+         +:+   +:+  +:+ +:+:+ +:+ +:+         +:+    +:+ +:+     +:+ +:+        +:+    +:+ ");
@@ -156,14 +158,14 @@ int battle(Obj player, Obj mob,int mobCount) {
 void DrawTable()
 {
 	//MoveCursor(2, 20, "HP");
-	//for (int i = 0; i < player.hp; i++) {
+	//for (int i = 0; i < php; i++) {
 	//	MoveCursor(i + 5, 20, "|");
 	//}
 }
 
 void MoveCursor(short x, short y, const char * str)
 {
-	COORD coord = { x,y }; //Coordnation: ÁÂÇ¥
+	COORD coord = { x,y }; //Coordnation: ì¢Œí‘œ
 	SetConsoleCursorPosition(
 		GetStdHandle(STD_OUTPUT_HANDLE),
 		coord
@@ -172,8 +174,8 @@ void MoveCursor(short x, short y, const char * str)
 }
 
 
-// °úÁ¦
+// ê³¼ì œ
 
-// ³×¸ğÆÇ ¾È¿¡ ÇÃ·¹ÀÌ¾î, ¸ó½ºÅÍ n¸¶¸®
-// ¸ó½ºÅÍ¿Í ¸¸³ª¸é ÀüÅõ ½ÃÀÛ (ÅÏÁ¦)
-// struct °ø ¹æ È¸ÇÇ HP
+// ë„¤ëª¨íŒ ì•ˆì— í”Œë ˆì´ì–´, ëª¬ìŠ¤í„° në§ˆë¦¬
+// ëª¬ìŠ¤í„°ì™€ ë§Œë‚˜ë©´ ì „íˆ¬ ì‹œì‘ (í„´ì œ)
+// struct ê³µ ë°© íšŒí”¼ HP
